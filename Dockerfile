@@ -26,5 +26,7 @@ COPY app.py nlp_pipeline.py .
 # Expõe a porta usada pela API Flask
 EXPOSE 5000
 
-# Executa o servidor Flask
-CMD ["python", "app.py"]
+# Executa o servidor Flask utilizando o Gunicorn para produção
+# -w 1: Utiliza 1 worker devido ao alto consumo de memória dos modelos de IA
+# --timeout 120: Tempo limite estendido para requisições de análise mais longas
+CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:5000", "app:app", "--timeout", "120"]
